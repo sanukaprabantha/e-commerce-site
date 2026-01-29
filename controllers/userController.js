@@ -36,6 +36,7 @@ export function createUser(req,res)
 
 export function loginUser(req,res)
 {
+    
     User.findOne(
         {
             email:req.body.email
@@ -61,12 +62,19 @@ export function loginUser(req,res)
                             role:user.role,
                              isEmailVerified:user.isEmailVerified,
                          },
-                         "jwt-secret"
+                         process.env.JWT_SECRET
                     )
 
                     res.json({
                         message:"login sucessful",
-                        token:token
+                        token:token,
+                        user:{
+                            email:user.email,
+                            firstName:user.firstName,
+                            lastName:user.lastName,
+                            role:user.role,
+                            isEmailVerified:user.isEmailVerified,
+                        }
                     })
                 }
                 else{

@@ -4,11 +4,13 @@ import studentRouter from "./routers/studentRouter.js";
 import userRouter from "./routers/userRouter.js";
 import jwt from "jsonwebtoken"
 import productRouter from "./routers/productRouter.js";
+import cors from "cors";
+import dotenv from "dotenv";
+import orderRouter from "./routers/orderRouter.js";
 
-
-
+dotenv.config();
 const app=express();
-
+app.use(cors()); 
 // function success()
 // {
 //    console.log("server is started");
@@ -21,7 +23,7 @@ app.use(
         let token = req.header("Authorization")
         if(token != null){
             token = token.replace("Bearer ","")
-            jwt.verify(token,"jwt-secret",
+            jwt.verify(token,process.env.JWT_SECRET,
                 (err,decode)=>{
                     if(decode == null){
                         res.json(
@@ -41,7 +43,7 @@ app.use(
     }
 )
 
-const connectionstring="mongodb+srv://admin:123@cluster0.bualhu0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const connectionstring=process.env.MONGO_URI;
 mongoose.connect(connectionstring).then(
     ()=>{
         console.log("Database conected");
@@ -52,11 +54,13 @@ mongoose.connect(connectionstring).then(
     }
 )
 
-app.use("/students",studentRouter)
+app.use("/api/students",studentRouter)
 
-app.use("/users",userRouter)
+app.use("/api/users",userRouter)
 
-app.use("/product",productRouter)
+app.use("/api/product",productRouter)
+
+app.use("/api/orders",orderRouter)
 
 app.listen(5000,
     ()=>{
