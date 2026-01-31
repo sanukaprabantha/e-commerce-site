@@ -143,3 +143,35 @@ export async function getOrders(req,res){
             });
     }
 }
+
+export async function updateOrderStatus(req,res){
+    if(!isAdmin(req)){
+        res.status(403).json({
+            message:"Forbidden"
+        });
+        return;
+    }
+    const orderId=req.params.orderId;
+    const newStatus=req.body.status;
+
+    try
+    {
+        await Order.updateOne(
+        {orderId:orderId},
+        {status:newStatus}
+    )
+
+    res.json({
+        message:"Order status updated successfully"
+    })
+    }
+            
+       
+    catch(error){
+        res.status(500).json({
+            message:"Internal server error"
+        });
+        return;
+    }
+    
+}
