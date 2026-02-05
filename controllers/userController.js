@@ -59,11 +59,12 @@ export function loginUser(req,res)
                              email:user.email,
                              firstName:user.firstName,
                              lastName:user.lastName,
-                            role:user.role,
+                             role:user.role,
                              isEmailVerified:user.isEmailVerified,
                          },
                          process.env.JWT_SECRET
                     )
+                    console.log("Generated Token:", token);
 
                     res.json({
                         message:"login sucessful",
@@ -75,7 +76,9 @@ export function loginUser(req,res)
                             role:user.role,
                             isEmailVerified:user.isEmailVerified,
                         }
+                        
                     })
+                    
                 }
                 else{
                     res.json({
@@ -111,4 +114,22 @@ export function isCustomer(req)
         return false;
     }
     return true;
+}
+
+export function getUser(req,res)
+{
+    if(req.user==null)
+    {
+        res.status(401).json(
+            {
+                message:"Unauthorized"
+            }
+        )
+        return;
+    }
+    else{
+        res.json(
+            req.user
+        )
+    }
 }
