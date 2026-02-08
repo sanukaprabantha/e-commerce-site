@@ -37,7 +37,7 @@ const userSchema= new mongoose.Schema(
         image:
         {
             type:String,
-            default:"https://share.google/images/DaeyksMaaxoBUf6a4"
+            default:"user.png"
         }
 
     }
