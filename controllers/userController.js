@@ -231,3 +231,20 @@ export async function googleLogin(req,res){
     }
     
 }
+
+export async function getAllUsers(req,res){
+    if(!isAdmin(req)){
+        res.status(403).json({
+            message:"Forbidden"
+        });
+        return;
+    }
+    try{
+        const users =await User.find();
+        res.json(users);
+    }catch(err){
+        res.status(500).son({
+            message:"Failed to get users"
+        });
+    }
+}
